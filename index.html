@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+	<title>css3demo</title>
+	<meta charset='utf-8' />
+	<style>
+		body,html{margin:0;padding:0;}
+		#canvas{
+			margin:30px auto;
+			display:block;
+			width:500px;
+			height:500px;
+		}
+		#fps{
+			display:block;
+			width:50px;
+			overflow:hidden;
+		}
+	</style>
+	<script src='js/requestAnimFrame.js'></script>
+	<script src='js/tween.js'></script>
+	<script src='js/Spirit.js'></script>
+	<script src='js/Stage.js'></script>
+	<script src='js/Timer.js'></script>
+</head>
+
+<body>
+	<div id='canvas'></div>
+	<span id='fps'></span>
+	<input type='button' value='动作1' id='anim1'/>
+	<input type='button' value='动作2' id='anim2'/>
+	<input type='button' value='动作3' id='anim3'/>
+	<input type='button' value='动作4' id='anim4'/>
+	<script>
+		 //test
+		 var spirits=[];
+		 var context=new Stage('canvas',600);
+		 context.setUpdate(function(time){
+		 	fpsDom.innerHTML=time;
+		 });
+		 context.dom
+		 var sp=[];
+		 for(var i=0;i<10;i++){
+		 	sp[i]={x:Math.sin(2*Math.PI*i/10)*200+200,y:230,z:Math.cos(2*Math.PI*i/10)*200+200};
+		 }
+		 var ap=[];
+		 for(var i=0;i<10;i++){
+		 	ap[i]={x:250+(Math.random()-0.5)*300,y:250+(Math.random()-0.5)*300,z:250+(Math.random()-0.5)*300};
+		 }
+		 var positionStart=[];
+		 for(var i=0;i<10;i++){
+		 	positionStart[i]={x:50*i,y:230,z:0};
+		 }
+		 var cp=[];
+		 for(var i=0;i<10;i++){
+		 	cp[i]={x:50*i,y:230,z:Math.abs(i-5)*100};
+		 }
+		 var fpsDom=document.getElementById('fps');
+		 for(var i=0;i<10;i++)
+		 {	 
+		 	spirits[i]=new Spirit({},{backgroundColor:'rgb('+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+','+Math.round(Math.random()*255)+')',width:50,height:50});
+		 	spirits[i].rotate={x:0,y:0,z:0};
+		 	spirits[i].position={x:50*i,y:230,z:0};
+		 	spirits[i].opacity=0.5;
+		 	spirits[i].setUpdate(function(deltaTime){
+		 		this.rotate.x+=5;
+		 		this.rotate.y+=5;
+		 	});
+		 	context.addSpirit(spirits[i]);
+		 }
+		 var timer=new Timer(context);
+		 timer.run();
+		 document.getElementById('anim1').onclick=function(){
+	 		for(var i=0;i<10;i++){spirits[i].setAnim([
+	 			{props:{rotate:{x:200,y:200,z:-10}},time:500},
+			 	{props:{position:ap[i]},time:500}]);
+	 		}
+	 	}
+	 	document.getElementById('anim2').onclick=function(){
+	 		for(var i=0;i<10;i++){spirits[i].setAnim([
+	 			{props:{rotate:sp[i]},time:500},
+			 	{props:{position:sp[i]},time:500}]);
+	 		}
+	 	}
+	 	document.getElementById('anim3').onclick=function(){
+	 		for(var i=0;i<10;i++){spirits[i].setAnim([
+	 			{props:{rotate:{x:Math.random()*180,y:Math.random()*180,z:Math.random()*180}},time:500},
+			 	{props:{position:cp[i]},time:500}]);
+	 		}
+	 	}
+	 	document.getElementById('anim4').onclick=function(){
+	 		for(var i=0;i<10;i++){spirits[i].setAnim([
+	 			{props:{rotate:{x:0,y:0,z:0}},time:500},
+		 		{props:{position:positionStart[i]},time:500}]);
+	 		}
+	 	}
+	</script>
+</body>
+</html>
